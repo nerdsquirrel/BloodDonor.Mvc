@@ -1,1 +1,77 @@
-﻿<h1>Blood donor Index page</h1>
+﻿@model IEnumerable<BloodDonorEntity>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Full Name
+            </th>
+            <th>
+                Contact Number
+            </th>
+            <th>
+                Date of Birth
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Blood Group
+            </th>
+            <th>
+                Weight
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                Last Donation Date
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.FullName
+                </td>
+                <td>
+                    @item.ContactNumber
+                </td>
+                <td>
+                    @item.DateOfBirth
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.BloodGroup
+                </td>
+                <td>
+                    @item.Weight
+                </td>
+                <td>
+                    @item.Address
+                </td>
+                <td>
+                    @item.LastDonationDate
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

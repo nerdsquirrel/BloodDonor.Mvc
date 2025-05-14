@@ -1,22 +1,17 @@
-﻿@model BloodDonor.Mvc.Models.BloodDonorEntity
+@model BloodDonorEntity
+@{
+    ViewData["Title"] = "Edit";
+}
 
-@{
-    ViewData["Title"] = "View";
-}
-@{
-    if (ViewBag.Message != null)
-    {
-        <h1>
-            @ViewBag.Message;
-        </h1>
-    }
-}
-<h4>BloodDonor</h4>
+<h1>Edit</h1>
+
+<h4>Blood Donor</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="FullName" class="control-label">Full name:</label>
                 <input asp-for="FullName" class="form-control" />
@@ -28,17 +23,17 @@
                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label">Date of birth:</label>
+                <label asp-for="DateOfBirth" class="control-label">date of birth:</label>
                 <input asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label">Email address:</label>
+                <label asp-for="Email" class="control-label">Email: </label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BloodGroup" class="control-label">Blood Group:</label>
+                <label asp-for="BloodGroup" class="control-label">Blood group:</label>
                 <select class="form-control" asp-for="BloodGroup" asp-items="Html.GetEnumSelectList<BloodGroup>()">
                     <option selected="selected" value="">Select Blood Group</option>
                 </select>
@@ -60,7 +55,7 @@
                 <span asp-validation-for="LastDonationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
