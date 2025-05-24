@@ -1,1 +1,68 @@
-﻿<h1>Blood donor Index page</h1>
+﻿@model List<BloodDonorEntity>
+
+@{
+    ViewData["Title"] = "Blood Donor List";
+}
+
+<h2 class="mb-4">Blood Donor List</h2>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <select name="bloodGroup" class="form-select">
+            <option value="">All Blood Groups</option>
+            @foreach (var bg in Enum.GetNames(typeof(BloodGroup)))
+            {
+                <option value="@bg">@bg</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <input type="text" name="address" class="form-control" placeholder="Search by address" />
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Picture</th>
+            <th>Name</th>
+            <th>Blood Group</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Age</th>
+            <th>Last Donation</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var donor in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(donor.ProfilePicture))
+                    {
+                        <img src="~/@donor.ProfilePicture" alt="Profile" width="60" height="60" style="object-fit:cover;" class="rounded-circle" />
+                    }
+                    else
+                    {
+                        <i class="fas fa-user-circle fa-3x text-secondary"></i>
+                    }
+                </td>
+                <td>@donor.FullName</td>
+                <td>@donor.BloodGroup</td>
+                <td>@donor.ContactNumber</td>
+                <td>@donor.Email</td>
+                <td>@donor.Address</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@donor.Id" class="btn btn-sm btn-info">View</a>
+                    <a asp-action="Edit" asp-route-id="@donor.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@donor.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

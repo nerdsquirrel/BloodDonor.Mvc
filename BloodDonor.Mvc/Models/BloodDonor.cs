@@ -19,7 +19,7 @@ namespace BloodDonor.Mvc.Models
         [Range(50,150)]
         public float Weight { get; set; }
         public string? Address { get; set; }
-        public DateTime LastDonationDate { get; set; }
+        public DateTime? LastDonationDate { get; set; }
         public string? ProfilePicture { get; set; }
         public Collection<Donation> Donations { get; set; } = new Collection<Donation>();
 

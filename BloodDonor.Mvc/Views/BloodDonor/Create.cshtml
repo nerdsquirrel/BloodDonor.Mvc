@@ -1,16 +1,14 @@
-﻿@model BloodDonor.Mvc.Models.BloodDonorEntity
+﻿@model BloodDonorCreateViewModel
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Add BloodDonor";
 }
 
-<h1>ViewBag.Message</h1>
-
-<h4>BloodDonor</h4>
+<h4>Add new BloodDonor</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
             <div class="form-group">
                 <label asp-for="FullName" class="control-label"></label>
@@ -24,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
+                <input asp-for="DateOfBirth" class="form-control" type="date"/>
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,12 +32,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="BloodGroup" class="control-label"></label>
-                <input asp-for="BloodGroup" class="form-control" />
+                <select asp-for="BloodGroup" class="form-control" asp-items="Html.GetEnumSelectList<BloodGroup>()"></select>
                 <span asp-validation-for="BloodGroup" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Weight" class="control-label"></label>
-                <input asp-for="Weight" class="form-control" />
+                <input asp-for="Weight" class="form-control" type="number" min="1" max="200" step="1"/>
                 <span asp-validation-for="Weight" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -49,8 +47,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="LastDonationDate" class="control-label"></label>
-                <input asp-for="LastDonationDate" class="form-control" />
+                <input asp-for="LastDonationDate" class="form-control" type="date" />
                 <span asp-validation-for="LastDonationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfilePicture">Profile Picture</label>
+                <input asp-for="ProfilePicture" class="form-control" type="file" accept="image/*" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
