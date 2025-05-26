@@ -63,6 +63,33 @@ namespace BloodDonor.Mvc.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BloodDonors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "New York",
+                            BloodGroup = 0,
+                            ContactNumber = "9876543210",
+                            DateOfBirth = new DateTime(1990, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "alice@example.com",
+                            FullName = "Alice Thomas",
+                            LastDonationDate = new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProfilePicture = "profiles/alice.jpg",
+                            Weight = 60f
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Chicago",
+                            BloodGroup = 7,
+                            ContactNumber = "9876543211",
+                            DateOfBirth = new DateTime(1985, 10, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "bob@example.com",
+                            FullName = "Bob Smith",
+                            ProfilePicture = "profiles/bob.jpg",
+                            Weight = 72f
+                        });
                 });
 
             modelBuilder.Entity("BloodDonor.Mvc.Models.Donation", b =>

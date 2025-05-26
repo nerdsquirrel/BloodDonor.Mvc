@@ -1,0 +1,38 @@
+﻿@model BloodDonorListViewModel
+
+@{
+    ViewData["Title"] = "Donor Details";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="row g-0">
+            <div class="col-md-4 text-center p-4">
+                @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                {
+                    <img src="~/@Model.ProfilePicture" class="img-fluid rounded-circle border" style="max-width: 200px;" />
+                }
+                else
+                {
+                    <i class="fas fa-user-circle fa-3x text-secondary"></i>
+                }
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="card-title">@Model.FullName</h3>
+                    <p><strong>Blood Group:</strong> @Model.BloodGroup</p>
+                    <p><strong>Contact:</strong> @Model.ContactNumber</p>
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Address:</strong> @Model.Address</p>
+                    <p><strong>Age:</strong> @Model.Age</p>
+                    <p><strong>Last Donation:</strong> @Model.LastDonationDate</p>
+                    <p><strong>Eligibility:</strong> <span class="badge @(Model.IsEligible ? "bg-success" : "bg-danger")">@(Model.IsEligible ? "Eligible" : "Not eligible")</span></p>
+
+
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

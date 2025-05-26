@@ -1,0 +1,88 @@
+﻿@model BloodDonorEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Donor";
+}
+
+<h2 class="mb-4">Edit Blood Donor</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            @* Hidden Id *@
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ContactNumber" class="control-label"></label>
+                <input asp-for="ContactNumber" class="form-control" />
+                <span asp-validation-for="ContactNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" type="date" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BloodGroup" class="control-label"></label>
+                <select asp-for="BloodGroup" class="form-control" asp-items="Html.GetEnumSelectList<BloodGroup>()"></select>
+                <span asp-validation-for="BloodGroup" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Weight" class="control-label"></label>
+                <input asp-for="Weight" class="form-control" type="number" step="1" min="1" max="200" />
+                <span asp-validation-for="Weight" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastDonationDate" class="control-label"></label>
+                <input asp-for="LastDonationDate" class="form-control" type="date" />
+                <span asp-validation-for="LastDonationDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Current Picture</label><br />
+                @if (!string.IsNullOrEmpty(Model.ExistingProfilePicture))
+                {
+                    <img src="~/@Model.ExistingProfilePicture" width="60" height="60" class="rounded-circle border mb-2" style="object-fit: cover;" />
+                }
+                else
+                {
+                    <span>No picture</span>
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ProfilePicture">Change Profile Picture</label>
+                <input asp-for="ProfilePicture" class="form-control" type="file" accept="image/*" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-﻿@model List<BloodDonorEntity>
+﻿@model List<BloodDonorListViewModel>
 
 @{
     ViewData["Title"] = "Blood Donor List";
@@ -7,7 +7,7 @@
 <h2 class="mb-4">Blood Donor List</h2>
 
 <form method="get" class="row g-2 mb-3">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <select name="bloodGroup" class="form-select">
             <option value="">All Blood Groups</option>
             @foreach (var bg in Enum.GetNames(typeof(BloodGroup)))
@@ -16,10 +16,17 @@
             }
         </select>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <input type="text" name="address" class="form-control" placeholder="Search by address" />
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <select name="isEligible" class="form-select">
+            <option value="">All Donor</option>
+            <option value="true">Eligible</option>
+            <option value="false">Not Eligible</option>
+        </select>
+    </div>
+    <div class="col-md-3">
         <button type="submit" class="btn btn-primary w-100">Search</button>
     </div>
 </form>
@@ -35,6 +42,7 @@
             <th>Address</th>
             <th>Age</th>
             <th>Last Donation</th>
+            <th>Eligiblility</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -57,6 +65,18 @@
                 <td>@donor.ContactNumber</td>
                 <td>@donor.Email</td>
                 <td>@donor.Address</td>
+                <td>@donor.Age</td>
+                <td>@donor.LastDonationDate</td>
+                <td>
+                    @if (donor.IsEligible)
+                    {
+                        <span class="badge bg-success">Eligible</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Not Eligible</span>
+                    }
+                </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@donor.Id" class="btn btn-sm btn-info">View</a>
                     <a asp-action="Edit" asp-route-id="@donor.Id" class="btn btn-sm btn-warning">Edit</a>

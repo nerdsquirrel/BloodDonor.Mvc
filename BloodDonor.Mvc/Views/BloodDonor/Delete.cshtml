@@ -1,0 +1,33 @@
+﻿@model BloodDonorListViewModel
+
+@{
+    ViewData["Title"] = "Delete Donor";
+}
+
+<h2>Delete Confirmation</h2>
+
+<div class="alert alert-danger">
+    Are you sure you want to delete <strong>@Model.FullName</strong>?
+</div>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Blood Group</dt>
+        <dd class="col-sm-9">@Model.BloodGroup</dd>
+
+        <dt class="col-sm-3">Contact</dt>
+        <dd class="col-sm-9">@Model.ContactNumber</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+
+        <dt class="col-sm-3">Address</dt>
+        <dd class="col-sm-9">@Model.Address</dd>
+    </dl>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
