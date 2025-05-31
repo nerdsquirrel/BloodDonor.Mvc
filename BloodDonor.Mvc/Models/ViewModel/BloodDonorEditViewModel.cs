@@ -1,4 +1,4 @@
-﻿namespace BloodDonor.Mvc.Models
+﻿namespace BloodDonor.Mvc.Models.ViewModel
 {
     public class BloodDonorEditViewModel: BloodDonorCreateViewModel
     {

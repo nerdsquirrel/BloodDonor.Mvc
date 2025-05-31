@@ -2,12 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BloodDonor.Mvc.Models
+namespace BloodDonor.Mvc.Models.Entities
 {
-    public class BloodDonorEntity
+    public class BloodDonorEntity: BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
         public required string FullName { get; set; }
         [Phone]
         [Length(10, 15)]
@@ -23,27 +21,5 @@ namespace BloodDonor.Mvc.Models
         public string? ProfilePicture { get; set; }
         public Collection<Donation> Donations { get; set; } = new Collection<Donation>();
 
-    }
-
-    public enum BloodGroup
-    {
-        APositive,
-        ANegative,
-        BPositive,
-        BNegative,
-        ABPositive,
-        ABNegative,
-        OPositive,
-        ONegative
-    }
-
-    public class Donation
-    {
-        [Key]
-        public int Id { get; set; }
-        public required DateTime DonationDate { get; set; }
-
-        [ForeignKey("BloodDonor")]
-        public required int BloodDonorId { get; set; }
     }
 }
