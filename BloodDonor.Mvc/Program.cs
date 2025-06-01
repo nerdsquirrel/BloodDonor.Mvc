@@ -1,5 +1,6 @@
 using BloodDonor.Mvc.Data;
 using BloodDonor.Mvc.Data.UnitOfWork;
+using BloodDonor.Mvc.Mapping;
 using BloodDonor.Mvc.Repositories.Implementations;
 using BloodDonor.Mvc.Repositories.Interfaces;
 using BloodDonor.Mvc.Services.Implementations;
@@ -17,6 +18,11 @@ builder.Services.AddScoped<IBloodDonorService, BloodDonorService>();
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
 var app = builder.Build();
 

@@ -1,12 +1,8 @@
 ﻿using BloodDonor.Mvc.Data.UnitOfWork;
 using BloodDonor.Mvc.Models.Entities;
-using BloodDonor.Mvc.Models.ViewModel;
-using BloodDonor.Mvc.Repositories.Interfaces;
 using BloodDonor.Mvc.Services.Interfaces;
 using BloodDonor.Mvc.Services.Model;
-using BloodDonor.Mvc.Utilities;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace BloodDonor.Mvc.Services.Implementations
 {
@@ -18,9 +14,10 @@ namespace BloodDonor.Mvc.Services.Implementations
         {
             _unitOfWork = unitOfWork;
         }
-        public Task AddAsync(BloodDonorEntity bloodDonor)
+        public async Task AddAsync(BloodDonorEntity bloodDonor)
         {
-            throw new NotImplementedException();
+            _unitOfWork.BloodDonorRepository.Add(bloodDonor);
+             await _unitOfWork.SaveAsync();
         }
 
         public async Task DeleteAsync(int id)
@@ -43,9 +40,9 @@ namespace BloodDonor.Mvc.Services.Implementations
             return await _unitOfWork.BloodDonorRepository.GetByIdAsync(id);
         }
 
-        public async Task<List<BloodDonorListViewModel>> GetFilteredBloodDonorAsync(FilterDonorModel filter)
+        public async Task<List<BloodDonorEntity>> GetFilteredBloodDonorAsync(FilterDonorModel filter)
         {
-            var query = (await _unitOfWork.BloodDonorRepository.GetAllAsync()).AsEnumerable();
+            var query = _unitOfWork.BloodDonorRepository.Query();
 
             if (!string.IsNullOrEmpty(filter.bloodGroup))
                 query = query.Where(d => d.BloodGroup.ToString() == filter.bloodGroup);
@@ -53,30 +50,25 @@ namespace BloodDonor.Mvc.Services.Implementations
             if (!string.IsNullOrEmpty(filter.address))
                 query = query.Where(d => d.Address != null && d.Address.Contains(filter.address));
 
-            var donors = query.Select(d => new BloodDonorListViewModel
-            {
-                Id = d.Id,
-                FullName = d.FullName,
-                ContactNumber = d.ContactNumber,
-                Age = DateTime.Now.Year - d.DateOfBirth.Year,
-                Email = d.Email,
-                BloodGroup = d.BloodGroup.ToString(),
-                Address = d.Address,
-                LastDonationDate = DateHelper.GetDays(d.LastDonationDate),
-                ProfilePicture = d.ProfilePicture,
-                IsEligible = (d.Weight > 45 && d.Weight < 200) && (!d.LastDonationDate.HasValue || (DateTime.Now - d.LastDonationDate.Value).TotalDays >= 90)
-            }).ToList();
-
-            if (filter.isEligible.HasValue)
-            {
-                donors = donors.Where(x => x.IsEligible == filter.isEligible).ToList();
-            }
-            return donors;
+            return await query.ToListAsync();
         }
 
-        public Task UpdateAsync(BloodDonorEntity bloodDonor)
+        public async Task UpdateAsync(BloodDonorEntity bloodDonor)
         {
-            throw new NotImplementedException();
+            _unitOfWork.BloodDonorRepository.Update(bloodDonor);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public static bool IsEligible(BloodDonorEntity bloodDonor)
+        {
+            if (bloodDonor.Weight <= 45 || bloodDonor.Weight >= 200)
+                return false;
+            if (bloodDonor.LastDonationDate.HasValue)
+            {
+                var daysSinceLastDonation = (DateTime.Now - bloodDonor.LastDonationDate.Value).TotalDays;
+                return daysSinceLastDonation >= 90;
+            }
+            return true;
         }
     }
 }

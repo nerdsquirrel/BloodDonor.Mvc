@@ -7,5 +7,6 @@
         void Add(T bloodDonor);
         void Update(T bloodDonor);
         void Delete(T bloodDonor);
+        IQueryable<T> Query();
     }
 }
