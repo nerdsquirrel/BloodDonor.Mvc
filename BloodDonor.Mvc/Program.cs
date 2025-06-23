@@ -1,6 +1,8 @@
+using BloodDonor.Mvc.Configuration;
 using BloodDonor.Mvc.Data;
 using BloodDonor.Mvc.Data.UnitOfWork;
 using BloodDonor.Mvc.Mapping;
+using BloodDonor.Mvc.Middleware;
 using BloodDonor.Mvc.Repositories.Implementations;
 using BloodDonor.Mvc.Repositories.Interfaces;
 using BloodDonor.Mvc.Services.Implementations;
@@ -24,6 +26,13 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("MailSettings"));
+
+builder.Services.AddOptions<EmailSettings>()
+    .BindConfiguration("EmailSettings")
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,6 +45,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseMiddleware<IPWhiteListingMiddleware>();
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseAuthorization();
 
