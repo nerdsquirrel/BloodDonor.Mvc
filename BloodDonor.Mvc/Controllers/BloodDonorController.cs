@@ -3,10 +3,12 @@ using BloodDonor.Mvc.Models.Entities;
 using BloodDonor.Mvc.Models.ViewModel;
 using BloodDonor.Mvc.Services.Interfaces;
 using BloodDonor.Mvc.Services.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BloodDonor.Mvc.Controllers
 {
+    [Authorize]
     public class BloodDonorController : Controller
     {
         private readonly IFileService _fileService;
@@ -15,7 +17,7 @@ namespace BloodDonor.Mvc.Controllers
         private readonly IConfiguration _configuration;
 
         public BloodDonorController(IMapper mapper,
-            IFileService fileService, 
+            IFileService fileService,
             IConfiguration configuration,
             IBloodDonorService bloodDonorService)
         {
@@ -25,7 +27,8 @@ namespace BloodDonor.Mvc.Controllers
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> Index([FromQuery]FilterDonorModel filter)
+        [AllowAnonymous]
+        public async Task<IActionResult> Index([FromQuery] FilterDonorModel filter)
         {
             var dbconnectionString = _configuration.GetConnectionString("DefaultConnection");
             var donors = await _bloodDonorService.GetFilteredBloodDonorAsync(filter);
@@ -33,6 +36,7 @@ namespace BloodDonor.Mvc.Controllers
             return View(donorViewModels);
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -82,6 +86,7 @@ namespace BloodDonor.Mvc.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var donor = await _bloodDonorService.GetByIdAsync(id);

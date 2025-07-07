@@ -7,14 +7,25 @@ using BloodDonor.Mvc.Repositories.Implementations;
 using BloodDonor.Mvc.Repositories.Interfaces;
 using BloodDonor.Mvc.Services.Implementations;
 using BloodDonor.Mvc.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddRazorPages();
+builder.Services.AddDbContext<BloodDonorDbContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDbContext<BloodDonorDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+})
+.AddEntityFrameworkStores<BloodDonorDbContext>()
+.AddDefaultTokenProviders()
+.AddDefaultUI();
+
 builder.Services.AddScoped<IBloodDonorRepository, BloodDonorRepository>();
 builder.Services.AddScoped<IBloodDonorService, BloodDonorService>();
 builder.Services.AddTransient<IFileService, FileService>();
@@ -49,6 +60,7 @@ app.UseRouting();
 app.UseMiddleware<IPWhiteListingMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -57,6 +69,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+app.MapRazorPages();
 
 
 app.Run();
