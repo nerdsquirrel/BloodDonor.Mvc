@@ -1,6 +1,7 @@
 using BloodDonor.Mvc.Configuration;
 using BloodDonor.Mvc.Data;
 using BloodDonor.Mvc.Data.UnitOfWork;
+using BloodDonor.Mvc.Extension;
 using BloodDonor.Mvc.Mapping;
 using BloodDonor.Mvc.Middleware;
 using BloodDonor.Mvc.Repositories.Implementations;
@@ -72,5 +73,6 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
+await app.SeedDatabaseAsync();
 
 app.Run();

@@ -1,0 +1,19 @@
+﻿@model BloodDonor.Mvc.Models.ViewModel.ManageUserRolesViewModel   
+
+<h2>Manage Roles for @Model.Email</h2>
+
+<form asp-action="UpdateRoles" method="post">
+    <input type="hidden" name="userId" value="@Model.UserId" />
+
+    @foreach (var role in Model.AvailableRoles)
+    {
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="roles" value="@role"
+                   @(Model.UserRoles.Contains(role) ? "checked" : "") />
+            <label class="form-check-label">@role</label>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-success mt-3">Update Roles</button>
+    <a asp-action="Users" class="btn btn-secondary mt-3">Back</a>
+</form>

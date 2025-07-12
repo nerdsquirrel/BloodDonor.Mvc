@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BloodDonor.Mvc.Data;
 using BloodDonor.Mvc.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BloodDonor.Mvc.Controllers
 {
+    [Authorize(Roles = "Donor")]
     public class DonationsController : Controller
     {
         private readonly BloodDonorDbContext _context;
