@@ -15,21 +15,26 @@ namespace BloodDonor.Mvc.Controllers
         private readonly IBloodDonorService _bloodDonorService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<BloodDonorController> _logger;
 
         public BloodDonorController(IMapper mapper,
             IFileService fileService,
             IConfiguration configuration,
+            ILogger<BloodDonorController> logger,
             IBloodDonorService bloodDonorService)
         {
             _fileService = fileService;
             _bloodDonorService = bloodDonorService;
             _mapper = mapper;
             _configuration = configuration;
+            _logger = logger;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index([FromQuery] FilterDonorModel filter)
         {
+            _logger.LogWarning("Fetching blood donors with filter: {@Filter}", filter);
+            _logger.LogDebug("Database connection string: {DbConnectionString}", _configuration.GetConnectionString("DefaultConnection"));
             var dbconnectionString = _configuration.GetConnectionString("DefaultConnection");
             var donors = await _bloodDonorService.GetFilteredBloodDonorAsync(filter);
             var donorViewModels = _mapper.Map<List<BloodDonorListViewModel>>(donors);

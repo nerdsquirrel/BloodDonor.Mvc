@@ -10,6 +10,7 @@ using BloodDonor.Mvc.Services.Implementations;
 using BloodDonor.Mvc.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,12 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddDefaultTokenProviders()
 .AddDefaultUI();
 
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+builder.Services.AddSerilog();
+// builder.Logging.AddProvider(new CustomLoggerProvider());
+
 builder.Services.AddScoped<IBloodDonorRepository, BloodDonorRepository>();
 builder.Services.AddScoped<IBloodDonorService, BloodDonorService>();
 builder.Services.AddTransient<IFileService, FileService>();
@@ -39,6 +46,10 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("MailSettings"));
+//builder.Services.AddAuthorization(options =>
+//{
+//    AuthorizationPolicy.AddPolicies(options);
+//});
 
 builder.Services.AddOptions<EmailSettings>()
     .BindConfiguration("EmailSettings")
@@ -59,7 +70,6 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseMiddleware<IPWhiteListingMiddleware>();
-app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -74,5 +84,7 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 await app.SeedDatabaseAsync();
+
+app.UseSerilogRequestLogging();
 
 app.Run();
