@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BloodDonor.Mvc.Models.Entities
 {
@@ -20,6 +19,6 @@ namespace BloodDonor.Mvc.Models.Entities
         public DateTime? LastDonationDate { get; set; }
         public string? ProfilePicture { get; set; }
         public Collection<Donation> Donations { get; set; } = new Collection<Donation>();
-
+        public Collection<DonorCampaignEntity> DonorCampaigns { get; set; } = new Collection<DonorCampaignEntity>();
     }
 }

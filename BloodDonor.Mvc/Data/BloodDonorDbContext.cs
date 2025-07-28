@@ -12,10 +12,26 @@ namespace BloodDonor.Mvc.Data
         }
         public DbSet<BloodDonorEntity> BloodDonors { get; set; }
         public DbSet<Donation> Donations { get; set; }
+        public DbSet<CampaignEntity> Campaigns { get; set; }
+
+        public DbSet<DonorCampaignEntity> DonorCampaigns { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<DonorCampaignEntity>()
+                    .HasKey(dc => new { dc.BloodDonorId, dc.CampaignId });
+
+            modelBuilder.Entity<DonorCampaignEntity>()
+                .HasOne(dc => dc.BloodDonor)
+                .WithMany(bd => bd.DonorCampaigns)
+                .HasForeignKey(dc => dc.BloodDonorId);
+
+            modelBuilder.Entity<DonorCampaignEntity>()
+                .HasOne(dc => dc.Campaign)
+                .WithMany(c => c.DonorCampaigns)
+                .HasForeignKey(dc => dc.CampaignId);
 
             modelBuilder.Entity<BloodDonorEntity>()
                 .HasData(
