@@ -1,32 +1,48 @@
-﻿@using BloodDonor.Mvc.Models.Entities
-@model Donation
+﻿@model BloodDonor.Mvc.Models.ViewModel.DonationCreateViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Donation";
 }
 
-<h1>Create</h1>
+<h1>Create Donation</h1>
 
-<h4>Donation</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="DonationDate" class="control-label"></label>
-                <input asp-for="DonationDate" class="form-control" type="date"/>
+                <input asp-for="DonationDate" class="form-control" type="date" value="@Model.DonationDate.ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="DonationDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="BloodDonorId" class="control-label">Donor</label>
-                <select asp-for="BloodDonorId" class="form-control" asp-items="@(ViewData["donorList"] as SelectList)">
+                <select asp-for="BloodDonorId" class="form-control" asp-items="Model.Donors">
                     <option value="">Select Donor</option>
                 </select>
                 <span asp-validation-for="BloodDonorId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
+                <label asp-for="CampaignId" class="control-label">Campaign</label>
+                <select asp-for="CampaignId" class="form-control" asp-items="Model.Campaigns" id="campaignSelect">
+                    <option value="">Select Campaign</option>
+                </select>
+                <span asp-validation-for="CampaignId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Location" class="control-label">Location</label>
+                <input asp-for="Location" class="form-control" id="locationInput" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

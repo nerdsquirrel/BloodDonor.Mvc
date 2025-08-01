@@ -7,7 +7,7 @@ namespace BloodDonor.Mvc.Repositories.Implementations
 {
     public class Repository<T> : IRepository<T> where T: BaseEntity
     {
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         public Repository(BloodDonorDbContext context)
         {            
@@ -29,7 +29,7 @@ namespace BloodDonor.Mvc.Repositories.Implementations
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public virtual async Task<T?> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }

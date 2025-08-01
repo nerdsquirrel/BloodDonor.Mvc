@@ -1,0 +1,41 @@
+﻿@using BloodDonor.Mvc.Models.ViewModel
+@model IEnumerable<CampaignListViewModel>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Campaign List</h2>
+    <a asp-action="Create" class="btn btn-primary">+ Add Campaign</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Title</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Donors</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var campaign in Model)
+        {
+            <tr>
+                <td>@campaign.Title</td>
+                <td>@campaign.StartDate.ToShortDateString()</td>
+                <td>@campaign.EndDate.ToShortDateString()</td>
+                <td>@campaign.Location</td>
+                <td>@campaign.Description</td>
+                <td>
+                    <span class="badge bg-info">@campaign.DonorCount</span>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@campaign.Id" class="btn btn-sm btn-info">View</a>
+                    <a asp-action="Edit" asp-route-id="@campaign.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@campaign.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
