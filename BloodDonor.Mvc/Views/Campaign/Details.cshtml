@@ -1,0 +1,63 @@
+﻿@using BloodDonor.Mvc.Models.ViewModel
+@model CampaignDetailsViewModel
+@{
+    ViewData["Title"] = "Campaign Details";
+}
+
+<h2 class="mb-4">Campaign Details</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">@Model.Title</h4>
+        <p><strong>Start Date:</strong> @Model.StartDate.ToShortDateString()</p>
+        <p><strong>End Date:</strong> @Model.EndDate.ToShortDateString()</p>
+        <p><strong>Location:</strong> @Model.Location</p>
+        <p><strong>Description:</strong> @Model.Description</p>
+    </div>
+</div>
+
+
+
+@if (Model.Donors.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Picture</th>
+                <th>Name</th>
+                <th>Blood Group</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Date Joined</th>
+                <th>No of Donations</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var donor in Model.Donors)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(donor.ProfilePicture))
+                        {
+                            <img src="~/@donor.ProfilePicture" alt="Profile" width="50" height="50" class="rounded-circle" style="object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <i class="fas fa-user-circle fa-2x text-secondary"></i>
+                        }
+                    </td>
+                    <td>@donor.FullName</td>
+                    <td>@donor.BloodGroup</td>
+                    <td>@donor.ContactNumber</td>
+                    <td>@donor.Email</td>
+                    <td>@donor.LastDonationDate</td>
+                    <td>@donor.DonorCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No donors assigned yet.</p>
+}

@@ -60,5 +60,40 @@ namespace BloodDonor.Mvc.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            var campaign = await _context.Campaigns
+                .Include(c => c.DonorCampaigns)
+                    .ThenInclude(dc => dc.BloodDonor)
+                        .ThenInclude(d => d.Donations)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (campaign == null)
+            {
+                return NotFound();
+            }
+            var model = new CampaignDetailsViewModel
+            {
+                Id = campaign.Id,
+                Title = campaign.Title,
+                Description = campaign.Description,
+                StartDate = campaign.StartDate,
+                EndDate = campaign.EndDate,
+                Location = campaign.Location,
+                Donors = campaign.DonorCampaigns.Select(dc => new BloodDonorInCampaignViewModel
+                {
+                    Id = dc.BloodDonor.Id,
+                    FullName = dc.BloodDonor.FullName,
+                    ContactNumber = dc.BloodDonor.ContactNumber,
+                    Email = dc.BloodDonor.Email,
+                    BloodGroup = dc.BloodDonor.BloodGroup.ToString(),
+                    Address = dc.BloodDonor.Address,
+                    LastDonationDate = dc.BloodDonor.LastDonationDate?.ToString("yyyy-MM-dd") ?? "N/A",
+                    ProfilePicture = dc.BloodDonor.ProfilePicture,
+                    DonorCount = dc.BloodDonor.Donations.Count
+                }).ToList()
+            };
+            return View(model);
+
+        }
     }
 }

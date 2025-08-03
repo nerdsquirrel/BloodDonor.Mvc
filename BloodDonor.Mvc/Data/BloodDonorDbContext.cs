@@ -13,7 +13,6 @@ namespace BloodDonor.Mvc.Data
         public DbSet<BloodDonorEntity> BloodDonors { get; set; }
         public DbSet<Donation> Donations { get; set; }
         public DbSet<CampaignEntity> Campaigns { get; set; }
-
         public DbSet<DonorCampaignEntity> DonorCampaigns { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

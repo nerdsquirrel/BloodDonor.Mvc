@@ -21,7 +21,7 @@ namespace BloodDonor.Mvc.Repositories.Implementations
 
         public void Delete(T bloodDonor)
         {
-            throw new NotImplementedException();
+            _dbSet.Remove(bloodDonor);
         }
 
         public async Task<List<T>> GetAllAsync()
