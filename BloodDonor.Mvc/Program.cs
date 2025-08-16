@@ -2,8 +2,10 @@ using BloodDonor.Mvc.Configuration;
 using BloodDonor.Mvc.Data;
 using BloodDonor.Mvc.Data.UnitOfWork;
 using BloodDonor.Mvc.Extension;
+using BloodDonor.Mvc.Filters;
 using BloodDonor.Mvc.Mapping;
 using BloodDonor.Mvc.Middleware;
+using BloodDonor.Mvc.Models.ValidationAttributes;
 using BloodDonor.Mvc.Repositories.Implementations;
 using BloodDonor.Mvc.Repositories.Interfaces;
 using BloodDonor.Mvc.Services.Implementations;
@@ -40,6 +42,7 @@ builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IDonationRepository, DonationRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<UniqueEmailFilter>();
 
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -55,6 +58,11 @@ builder.Services.AddOptions<EmailSettings>()
     .BindConfiguration("EmailSettings")
     .ValidateDataAnnotations()
     .ValidateOnStart();
+
+//builder.Services.AddControllers(options =>
+//{
+//    options.Filters.Add<UniqueEmailFilter>(order: 1);
+//});
 
 var app = builder.Build();
 

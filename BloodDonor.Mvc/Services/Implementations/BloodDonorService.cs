@@ -30,9 +30,9 @@ namespace BloodDonor.Mvc.Services.Implementations
             }
         }
 
-        public Task<IEnumerable<BloodDonorEntity>> GetAllAsync()
+        public async Task<IEnumerable<BloodDonorEntity>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.BloodDonorRepository.GetAllAsync();
         }
 
         public async Task<BloodDonorEntity?> GetByIdAsync(int id)

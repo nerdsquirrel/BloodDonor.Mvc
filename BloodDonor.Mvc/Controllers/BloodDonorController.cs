@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BloodDonor.Mvc.Filters;
 using BloodDonor.Mvc.Models.Entities;
 using BloodDonor.Mvc.Models.ViewModel;
 using BloodDonor.Mvc.Services.Interfaces;
@@ -48,7 +49,8 @@ namespace BloodDonor.Mvc.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(BloodDonorCreateViewModel donor)
+        [ServiceFilter(typeof(UniqueEmailFilter))]
+        public async Task<IActionResult> CreateAsync([FromForm]BloodDonorCreateViewModel donor)
         {
             if(!ModelState.IsValid)
                 return View(donor);
