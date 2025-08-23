@@ -59,12 +59,15 @@ builder.Services.AddOptions<EmailSettings>()
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-//builder.Services.AddControllers(options =>
-//{
-//    options.Filters.Add<UniqueEmailFilter>(order: 1);
-//});
+builder.Services.AddControllers(options =>
+{
+    // options.Filters.Add<DonorAuthorizationFilter>(order: 1);
+    options.Filters.Add<GlobalExceptionFilter>();
+});
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -77,7 +80,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseMiddleware<IPWhiteListingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
